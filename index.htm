@@ -1,0 +1,210 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>OrcaProHosting</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+        }
+
+        body, html {
+            min-height: 100%;
+        }
+
+        body {
+            background-image: -webkit-linear-gradient(top, #1c77b0 0%, #42aef3 100%);
+            background-image: linear-gradient(to bottom, #1c77b0 0%, #42aef3 100%);
+            background-repeat: repeat-x;
+            filter: e(%("progid:DXImageTransform.Microsoft.gradient(startColorstr='%d', endColorstr='%d', GradientType=0)",argb(#1c77b0),argb(#42aef3)));
+
+            font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+        }
+
+        #content {
+            background: url('img/text.png') center center no-repeat;
+            min-height: 250px;
+            min-width: 477px;
+            margin-top: 100px;
+        }
+
+        #button {
+            cursor: pointer;
+            width: 276px;
+            height: 61px;
+            margin: 0 auto;
+            border: 1px solid #8ccaf1;
+            border-radius: 6px;
+            background-color: #fff;
+            box-shadow: 0 5px 15px rgba(0,0,0,.25), inset 0 3px 3px rgba(255,255,255,.27);
+            background-image: -moz-linear-gradient(bottom, #39a3e5 0%, #258ed0 48.63%, #46a5e1 48.9%, #65b9ee 100%);
+            background-image: -webkit-linear-gradient(bottom, #39a3e5 0%, #258ed0 48.63%, #46a5e1 48.9%, #65b9ee 100%);
+            background-image: linear-gradient(bottom, #39a3e5 0%, #258ed0 48.63%, #46a5e1 48.9%, #65b9ee 100%);
+
+            color: #e4e4e4;
+            font-size: 32px;
+            text-shadow: 0 2px 0 rgba(0,0,0,.24);
+            text-align: center;
+            line-height: 61px;
+            text-transform: uppercase;
+        }
+
+        #buy-broken {
+            background: url('img/button-after.png') center center no-repeat;
+            height: 83px;
+            margin: -10px 0;
+        }
+
+        #ribbon {
+            margin-top: 30px;
+            background: rgba(0, 0, 0, 0.2);
+            padding: 10px;
+        }
+
+        .wave {
+            position: fixed;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: #fff;
+        }
+
+        @-webkit-keyframes wavy {
+            0%   { background-position: 0px 0px;}
+            100% { background-position: 60px 0px;}
+        }
+        @-moz-keyframes wavy {
+            0%   { background-position: 0px 0px;}
+            100% { background-position: 60px 0px;}
+        }
+        @keyframes wavy {
+            0%   { background-position: 0px 0px;}
+            100% { background-position: 60px 0px;}
+        }
+
+        .wave:before {
+            content: "";
+            display: block;
+            position:absolute;
+            height: 39px;
+            left: 0;
+            right: 0;
+            top: -38px;
+            background: url('img/wave.png') repeat-x;
+            background-position: 0px 0px;
+        }
+
+        .wave1 {
+            height: 100px;
+            z-index: 300;
+        }
+        .wave1:before {
+            -moz-animation: wavy 3s infinite linear;
+            -webkit-animation: wavy 3s infinite linear;
+            animation: wavy 3s infinite linear;
+        }
+        .wave2 {
+            height: 115px;
+            opacity: 0.7;
+            z-index: 200;
+        }
+        .wave2:before {
+            -moz-animation: wavy 4s infinite linear;
+            -webkit-animation: wavy 4s infinite linear;
+            animation: wavy 4s infinite linear;
+        }
+        .wave3 {
+            height: 130px;
+            opacity: 0.4;
+            z-index: 100;
+        }
+        .wave3:before {
+            -moz-animation: wavy 5s infinite linear;
+            -webkit-animation: wavy 5s infinite linear;
+            animation: wavy 5s infinite linear;
+        }
+        .orca {
+            background: url('img/orca.png');
+            width: 558px;
+            height: 283px;
+            z-index: 150;
+        }
+    </style>
+</head>
+<body>
+    <div id="content"></div>
+    <div id="ribbon">
+        <div id="button">Buy Now!</div>
+    </div>
+    <div class="wave wave1"></div>
+    <div class="wave wave2"></div>
+    <div class="wave wave3"></div>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-easing/1.3/jquery.easing.min.js"></script>
+    <script>
+        $(function () {
+            var window_width = $(window).width();
+            setInterval(function () {
+                var direction = Math.round(Math.random()) ? 1 : -1,
+                    start_x   = window_width * (Math.random() * 0.5 + 0.25) + (558 * direction),
+                    $orca     = $('<div class="orca" />');
+
+                $orca.css({
+                    position : 'fixed',
+                    bottom   : -185,
+                    left     : start_x,
+                    transform: 'rotateY(' + (direction > 0 ? 0 : 180) + 'deg)'
+                }).animate({
+                    left    : start_x + (window_width * 0.25 * -direction)
+                }, {
+                    queue   : false,
+                    duration: 5000,
+                    complete: function () {
+                        $orca.remove();
+                    }
+                }).animate({
+                    bottom: -95
+                }, {
+                    queue   : false,
+                    duration: 2500,
+                    complete: function () {
+                        $orca.animate({
+                            bottom: -185
+                        }, 2500, 'swing');
+                    }
+                }).appendTo('body');
+            }, 5000 + Math.random() * 5000);
+
+            $('#button').on('click', function () {
+                var $orca       = $('<div class="orca" />'),
+                    easeIn      = function (x, t, b, c, d) {
+                        return -c * (Math.sqrt(1 - (t/=d)*t) - 1) + b;
+                    },
+                    easeOut     = function (x, t, b, c, d) {
+                        return c * Math.sqrt(1 - (t=t/d-1)*t) + b;
+                    },
+                    vertical_d  = $('html').height() - $(this).offset().top - 300;
+
+                $orca.css({
+                    position : 'fixed',
+                    bottom   : -558 / 2,
+                    left     : (window_width - 558 - 170) / 2,
+                    transform: 'rotate(-90deg) scale(1.2, 1.2)'
+                }).animate({bottom: vertical_d}, {
+                    duration: 2500,
+                    easing  : 'easeOutQuad'
+                }).animate({bottom: -558 / 2}, {
+                    duration: 2500,
+                    easing  : 'easeInQuad',
+                    complete: function () { $(this).remove() }
+                }).appendTo('body');
+
+                setTimeout(function () {
+                    $('#button').replaceWith($('<div id="buy-broken" />'));
+                }, 2350);
+            });
+        });
+    </script>
+</body>
+</html>
